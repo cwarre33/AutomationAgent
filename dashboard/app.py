@@ -15,7 +15,7 @@ ROOT_DIR = Path(__file__).resolve().parent.parent
 if str(ROOT_DIR) not in sys.path:
     sys.path.append(str(ROOT_DIR))
 
-from run_workflow import run_workflow
+from run_workflow import run_workflow, execute_step
 
 
 st.title("AutomationAgent Dashboard")
@@ -25,6 +25,7 @@ workflow_files = sorted(p.name for p in workflow_dir.glob("*.yaml"))
 
 st.sidebar.header("Workflow")
 selected = st.sidebar.selectbox("Select workflow", workflow_files)
+debug_mode = st.sidebar.checkbox("Debug mode", value=False, key="debug_mode")
 
 # Load selected workflow content into session state
 if (
@@ -59,7 +60,23 @@ with col2:
         buffer = StringIO()
         try:
             with redirect_stdout(buffer):
-                run_workflow(temp_path)
+                st.session_state.results = run_workflow(temp_path, debug=debug_mode)
         except Exception as exc:
             buffer.write(f"Error: {exc}\n")
         logs_placeholder.text_area("Logs", buffer.getvalue(), height=200)
+
+if "results" in st.session_state:
+    st.subheader("Step Results")
+    for res in st.session_state.results:
+        key_prefix = f"step_{res['index']}"
+        with st.expander(f"Step {res['index']}: {res['agent']}"):
+            st.write("Inputs:", res["parameters"])
+            st.write("Output:", res["output"])
+            st.write(f"Time taken: {res['time_taken']:.2f}s")
+            if res["error"]:
+                st.error(res["error"])
+                if st.button("Rerun", key=f"rerun_{key_prefix}"):
+                    new_res = execute_step(res["step"], res["index"], debug=True)
+                    st.session_state.results[res["index"] - 1] = new_res
+                    st.experimental_rerun()
+
