@@ -1,0 +1,15 @@
+# Example ADK workflow for creating and posting a TikTok video
+# Non-programmers can modify the prompts and parameters below.
+steps:
+  - name: generate_script
+    agent: content.generate_content
+    prompt: "Write a 30-second TikTok script about recent AI news"
+
+  - name: edit_script
+    agent: content.edit_content
+    style: "short-form"
+
+  - name: publish
+    agent: content.post_content
+    platform: tiktok
+    schedule: immediate
