@@ -24,7 +24,9 @@ AutomationAgent is a lightweight framework for automating short-form content gen
 
 ## Adding workflows or agents
 
-- **Create a new agent** by adding a Python file in `agents/`. Each agent exposes functions that perform an action, e.g. `generate_content` or `post_content`.
+- **Create a new agent** by adding a Python file in `agents/`. Agents can
+  subclass `AutomationAgent` to share a common interface. Each agent exposes
+  functions that perform an action, e.g. `generate_content` or `post_content`.
 - **Define a workflow** by creating a YAML file in `workflows/`. A workflow lists steps by name and optional parameters that map to your agent functions. See `sample_workflow.yaml` for a minimal example.
 - After adding new agents or workflows, restart the dashboard to pick up the changes.
 
