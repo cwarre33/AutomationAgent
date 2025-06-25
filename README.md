@@ -1,30 +1,31 @@
 # AutomationAgent
 
-AutomationAgent is a modular Python project that automates short-form content generation,
-editing, and posting across multiple platforms. It is organized into several components:
+AutomationAgent is a lightweight framework for automating short-form content generation, editing and posting. It provides a simple Streamlit dashboard to trigger automation workflows and monitor results. Agents encapsulate individual tasks (such as generating or posting content) while workflows define how those agents run together.
 
-- **dashboard**: Streamlit dashboard for monitoring and controlling workflows.
-- **agents**: Modular automation scripts for generating, editing, and posting content.
-- **workflows**: YAML files defining reusable automation workflows.
-- **utils**: Shared utilities used across the project.
+## Project structure
 
-## Installation
+- **dashboard/** – Streamlit user interface for launching workflows.
+- **agents/** – Python modules containing reusable automation agents.
+- **workflows/** – YAML files describing sequences of agent steps.
+- **utils/** – Helper utilities shared across the project.
+- **requirements.txt** – Python dependencies.
 
-```bash
-# clone the repository
-git clone <repo-url>
-cd AutomationAgent
+## Running the dashboard
 
-# install dependencies
-pip install -r requirements.txt
-```
+1. Install the dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+2. Start the Streamlit app:
+   ```bash
+   streamlit run dashboard/app.py
+   ```
+   The dashboard will open in your browser where you can select and run workflows.
 
-## Usage
+## Adding workflows or agents
 
-Run the Streamlit dashboard:
+- **Create a new agent** by adding a Python file in `agents/`. Each agent exposes functions that perform an action, e.g. `generate_content` or `post_content`.
+- **Define a workflow** by creating a YAML file in `workflows/`. A workflow lists steps by name and optional parameters that map to your agent functions. See `sample_workflow.yaml` for a minimal example.
+- After adding new agents or workflows, restart the dashboard to pick up the changes.
 
-```bash
-streamlit run dashboard/app.py
-```
-
-Create or modify workflows in the `workflows` directory and extend agents in `agents`.
+AutomationAgent is intentionally simple and can be extended with additional utilities and agents to fit different content automation needs.
