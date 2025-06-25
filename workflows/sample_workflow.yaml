@@ -1,0 +1,7 @@
+# Example workflow configuration
+steps:
+  - name: generate
+    prompt: "Create a short update about AI advancements"
+  - name: edit
+  - name: post
+    platform: twitter
