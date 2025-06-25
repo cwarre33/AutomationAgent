@@ -1,0 +1,9 @@
+steps:
+  - agent: CreateContentAgent
+    parameters:
+      prompt: "Create a short update about AI advancements"
+  - agent: EditContentAgent
+    parameters: {}
+  - agent: PostContentAgent
+    parameters:
+      platform: twitter
